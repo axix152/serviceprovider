@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:serviceprovider/global.dart';
@@ -14,6 +13,7 @@ class HomeTabScreen extends StatefulWidget {
 }
 
 class _HomeTabScreenState extends State<HomeTabScreen> {
+  final _dbref = FirebaseDatabase.instance.ref().child("serviceProvider");
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -54,24 +54,83 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
             SizedBox(
               height: 5.h,
             ),
-            Request_widget(
-              image: const AssetImage('assets/images/aziz.jpeg'),
-              title: "Aziz khan",
-              subtitle: "we need a Decoator",
-              close: IconButton(
-                onPressed: () {
-                  print("close clicked");
-                },
-                icon: const Icon(Icons.close),
-                color: Colors.red.shade700,
-              ),
-              done: IconButton(
-                onPressed: () {
-                  print("done clicked");
-                },
-                icon: const Icon(Icons.done),
-                color: Colors.green.shade700,
-              ),
+            StreamBuilder(
+              stream: _dbref.onValue,
+              builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text("Failed to load data"),
+                  );
+                }
+                if (snapshot.hasData &&
+                    !snapshot.hasError &&
+                    snapshot.data.snapshot.value != null) {
+                  Map data1 = snapshot.data.snapshot.value;
+                  List item = [];
+                  // data1.forEach((index, snap) {
+                  //   Map usermap = {};
+                  //   usermap.addAll(snap['request']);
+
+                  //   usermap.forEach((key, value) {
+                  //     print(value['name']);
+                  //     print(value['email']);
+                  //   });
+                  // });
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: data1.length,
+                      padding: EdgeInsets.all(7.h),
+                      shrinkWrap: true,
+                      itemBuilder: ((context, i) => Container(
+                            margin: EdgeInsets.all(8.h),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black26),
+                            ),
+                            child: ListTile(
+                              leading: Icon(
+                                Icons.person,
+                                size: 35.h,
+                                color: Colors.black,
+                              ),
+                              title: Text(
+                                "Aziz khan",
+                                style: TextStyle(
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              subtitle: Text('aziz@gmail.com'),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.close,
+                                      size: 32.h,
+                                    ),
+                                    color: Colors.red.shade500,
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.done,
+                                      size: 32.h,
+                                    ),
+                                    color: Colors.green.shade500,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )),
+                    ),
+                  );
+                }
+                return Center(
+                    child: CircularProgressIndicator(
+                  color: Colors.pink.shade400,
+                ));
+              },
             ),
           ],
         ),
@@ -83,15 +142,15 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
 class Request_widget extends StatelessWidget {
   const Request_widget({
     required this.image,
-    required this.title,
-    required this.subtitle,
+    required this.name,
+    required this.email,
     required this.done,
     required this.close,
     Key? key,
   });
   final AssetImage image;
-  final String title;
-  final String subtitle;
+  final String name;
+  final String email;
   final IconButton close;
   final IconButton done;
 
@@ -109,13 +168,13 @@ class Request_widget extends StatelessWidget {
           backgroundImage: image,
         ),
         title: Text(
-          title,
+          name,
           style: TextStyle(
             fontSize: 17.sp,
             fontWeight: FontWeight.bold,
           ),
         ),
-        subtitle: Text(subtitle),
+        subtitle: Text(email),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

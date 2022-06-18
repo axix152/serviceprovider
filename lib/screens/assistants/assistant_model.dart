@@ -4,6 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:serviceprovider/global.dart';
 import 'package:serviceprovider/models/provider_details.dart';
 import 'package:serviceprovider/models/provider_model.dart';
+import 'package:serviceprovider/models/request.dart';
 
 class AssistantModel {
   static void readCurrentUserInfo() async {
@@ -40,4 +41,19 @@ class AssistantModel {
       print("Title is " + currentProviderDetails!.title.toString());
     });
   }
+
+  // static void request() async {
+  //   currentFirebaseUser = fauth.currentUser;
+  //   DatabaseReference ref = FirebaseDatabase.instance
+  //       .ref()
+  //       .child("serviceProvider")
+  //       .child(currentFirebaseUser!.uid)
+  //       .child('request');
+
+  //   ref.once().then((snap) {
+  //     userrequest = Requests.fromDataSnapshot(snap.snapshot);
+  //     print("Name of user is " + userrequest!.name.toString());
+  //     print("Email of user is " + userrequest!.email.toString());
+  //   });
+  // }
 }

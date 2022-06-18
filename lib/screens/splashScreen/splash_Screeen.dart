@@ -19,6 +19,8 @@ class _SplashScreenState extends State<SplashScreen> {
   startTimer() {
     fauth.currentUser != null ? AssistantModel.readCurrentUserInfo() : null;
     fauth.currentUser != null ? AssistantModel.currentUserDetails() : null;
+    // fauth.currentUser != null ? AssistantModel.request() : null;
+
     Timer(const Duration(seconds: 4), () async {
       if (await fauth.currentUser != null) {
         Get.offAll(MainScreen());
