@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -8,7 +6,6 @@ import 'package:serviceprovider/global.dart';
 import 'package:serviceprovider/screens/main_screen.dart';
 import '../../const.dart';
 import '../assistants/assistant_model.dart';
-import '../authentication/logIn_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -19,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   startTimer() {
     fauth.currentUser != null ? AssistantModel.readCurrentUserInfo() : null;
     fauth.currentUser != null ? AssistantModel.currentUserDetails() : null;
-    // fauth.currentUser != null ? AssistantModel.request() : null;
+    //fauth.currentUser != null ? AssistantModel.request() : null;
 
     Timer(const Duration(seconds: 4), () async {
       if (await fauth.currentUser != null) {

@@ -68,7 +68,7 @@ class SignUp extends StatelessWidget {
         Fluttertoast.showToast(msg: "Name must be atleast 3 Characters.");
       } else if (!emailCont.text.contains("@")) {
         Fluttertoast.showToast(msg: "Email address is not valid.");
-      } else if (phoneCont.text.isEmpty) {
+      } else if (phoneCont.text.isEmpty && phoneCont.text.length == 11) {
         Fluttertoast.showToast(msg: "Phone Number is required.");
       } else if (passwordCont.text.length < 6) {
         Fluttertoast.showToast(msg: "password must be atleast 6 Characters.");
@@ -152,7 +152,7 @@ class SignUp extends StatelessWidget {
                             hint_Text: "Enter Phone",
                             secureText: false,
                             prefexicon: Icon(
-                              Icons.person,
+                              Icons.phone,
                               size: 25.w,
                               color: kblackColor,
                             ),

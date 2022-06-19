@@ -54,84 +54,117 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
             SizedBox(
               height: 5.h,
             ),
-            StreamBuilder(
-              stream: _dbref.onValue,
-              builder: (context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(
-                    child: Text("Failed to load data"),
-                  );
-                }
-                if (snapshot.hasData &&
-                    !snapshot.hasError &&
-                    snapshot.data.snapshot.value != null) {
-                  Map data1 = snapshot.data.snapshot.value;
-                  List item = [];
-                  // data1.forEach((index, snap) {
-                  //   Map usermap = {};
-                  //   usermap.addAll(snap['request']);
-
-                  //   usermap.forEach((key, value) {
-                  //     print(value['name']);
-                  //     print(value['email']);
-                  //   });
-                  // });
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: data1.length,
-                      padding: EdgeInsets.all(7.h),
-                      shrinkWrap: true,
-                      itemBuilder: ((context, i) => Container(
-                            margin: EdgeInsets.all(8.h),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black26),
-                            ),
-                            child: ListTile(
-                              leading: Icon(
-                                Icons.person,
-                                size: 35.h,
-                                color: Colors.black,
-                              ),
-                              title: Text(
-                                "Aziz khan",
-                                style: TextStyle(
-                                  fontSize: 17.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              subtitle: Text('aziz@gmail.com'),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.close,
-                                      size: 32.h,
-                                    ),
-                                    color: Colors.red.shade500,
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.done,
-                                      size: 32.h,
-                                    ),
-                                    color: Colors.green.shade500,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )),
+            Container(
+              margin: EdgeInsets.all(7.h),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black26),
+              ),
+              child: ListTile(
+                leading: Icon(
+                  Icons.person,
+                  size: 35.h,
+                  color: Colors.black,
+                ),
+                title: Text(
+                  "Aziz khan",
+                  style: TextStyle(
+                    fontSize: 17.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text("aziz@gmail.com"),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.close,
+                        size: 32.h,
+                      ),
+                      color: Colors.red.shade500,
                     ),
-                  );
-                }
-                return Center(
-                    child: CircularProgressIndicator(
-                  color: Colors.pink.shade400,
-                ));
-              },
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.done,
+                        size: 32.h,
+                      ),
+                      color: Colors.green.shade500,
+                    ),
+                  ],
+                ),
+              ),
             ),
+            // StreamBuilder(
+            //   stream: _dbref.onValue,
+            //   builder: (context, AsyncSnapshot snapshot) {
+            //     if (snapshot.hasError) {
+            //       return const Center(
+            //         child: Text("Failed To load data"),
+            //       );
+            //     }
+            //     if (snapshot.hasData) {
+            //       Map extractedData = snapshot.data.snapshot.value;
+            //       List item = [];
+            //       extractedData.forEach(
+            //           (index, snap) => item.add({"key": index, ...snap}));
+            //       return Expanded(
+            //         child: ListView.builder(
+            //           padding: EdgeInsets.all(10.h),
+            //           itemCount: extractedData.length,
+            //           scrollDirection: Axis.vertical,
+            //           shrinkWrap: true,
+            //           itemBuilder: (ctx, i) => Container(
+            //             margin: EdgeInsets.all(7.h),
+            //             width: double.infinity,
+            //             decoration: BoxDecoration(
+            //               border: Border.all(color: Colors.black26),
+            //             ),
+            //             child: ListTile(
+            //               leading: Icon(
+            //                 Icons.person,
+            //                 size: 35.h,
+            //                 color: Colors.black,
+            //               ),
+            //               title: Text(
+            //                 item[i]['request']['name'],
+            //                 style: TextStyle(
+            //                   fontSize: 17.sp,
+            //                   fontWeight: FontWeight.bold,
+            //                 ),
+            //               ),
+            //               subtitle: Text(item[i]['request']['email']),
+            //               trailing: Row(
+            //                 mainAxisSize: MainAxisSize.min,
+            //                 children: [
+            //                   IconButton(
+            //                     onPressed: () {},
+            //                     icon: Icon(
+            //                       Icons.close,
+            //                       size: 32.h,
+            //                     ),
+            //                     color: Colors.red.shade500,
+            //                   ),
+            //                   IconButton(
+            //                     onPressed: () {},
+            //                     icon: Icon(
+            //                       Icons.done,
+            //                       size: 32.h,
+            //                     ),
+            //                     color: Colors.green.shade500,
+            //                   ),
+            //                 ],
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       );
+            //     }
+            //     return const Center(child: CircularProgressIndicator());
+            //   },
+            // )
           ],
         ),
       ),
@@ -139,56 +172,8 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
   }
 }
 
-class Request_widget extends StatelessWidget {
-  const Request_widget({
-    required this.image,
-    required this.name,
-    required this.email,
-    required this.done,
-    required this.close,
-    Key? key,
-  });
-  final AssetImage image;
-  final String name;
-  final String email;
-  final IconButton close;
-  final IconButton done;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(8.h),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black26),
-      ),
-      child: ListTile(
-        leading: CircleAvatar(
-          radius: 25,
-          backgroundColor: Colors.transparent,
-          backgroundImage: image,
-        ),
-        title: Text(
-          name,
-          style: TextStyle(
-            fontSize: 17.sp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        subtitle: Text(email),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            close,
-            done,
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _VideoDescription extends StatefulWidget {
-  const _VideoDescription({
+class Description extends StatefulWidget {
+  const Description({
     Key? key,
     required this.title,
     required this.user,
@@ -198,12 +183,11 @@ class _VideoDescription extends StatefulWidget {
   final String user;
 
   @override
-  State<_VideoDescription> createState() => _VideoDescriptionState();
+  State<Description> createState() => _DescriptionState();
 }
 
-class _VideoDescriptionState extends State<_VideoDescription> {
+class _DescriptionState extends State<Description> {
   var myrating = 3.5;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -275,7 +259,7 @@ class CustomListItem extends StatelessWidget {
           ),
           Expanded(
             flex: 3,
-            child: _VideoDescription(
+            child: Description(
               title: title,
               user: user,
             ),

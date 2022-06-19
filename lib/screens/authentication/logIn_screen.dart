@@ -150,7 +150,7 @@ class _LogInState extends State<LogIn> {
                         ),
                         TextFiled(
                           controller: emailCont,
-                          hint_Text: "Enter username...",
+                          hint_Text: "Enter email",
                           secureText: false,
                           prefexicon: Icon(
                             Icons.person,

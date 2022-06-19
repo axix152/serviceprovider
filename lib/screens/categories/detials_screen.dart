@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +29,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
     TextEditingController descCont = TextEditingController();
     TextEditingController priceCont = TextEditingController();
     TextEditingController locationCont = TextEditingController();
-    FirebaseFirestore.instance.collection('Categories');
     FirebaseStorage fs = FirebaseStorage.instance;
     Future<void> addDetails() async {
       showDialog(
