@@ -65,10 +65,12 @@ class _LogInState extends State<LogIn> {
                 .once()
                 .then(((value) {
               final snapshot = value.snapshot;
-              if (snapshot.value != null) {
+              if (snapshot.exists) {
                 Get.to(SplashScreen());
-              } else {
-                Get.to(SelectCategory());
+              }
+              // ignore: deprecated_member_use
+              else {
+                Get.offAll(SelectCategory());
               }
             }));
           } else {
@@ -187,7 +189,9 @@ class _LogInState extends State<LogIn> {
                                 onPressed: () {
                                   Get.to(SignUp());
                                 },
-                                child: const Text("Signup"))
+                                child: const Text(
+                                  "Signup",
+                                ))
                           ],
                         ),
                       ],

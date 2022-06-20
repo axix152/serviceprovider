@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:serviceprovider/const.dart';
 import 'package:get/get.dart';
+import 'package:serviceprovider/global.dart';
+import 'package:serviceprovider/screens/authentication/logIn_screen.dart';
 import '../categories/detials_screen.dart';
 
 class SelectCategory extends StatefulWidget {
@@ -37,6 +39,16 @@ class _SelectCategoryState extends State<SelectCategory> {
           automaticallyImplyLeading: false,
           elevation: 0,
           backgroundColor: Colors.transparent,
+          leading: IconButton(
+            onPressed: () {
+              fauth.signOut();
+              Get.to(LogIn());
+            },
+            icon: Icon(
+              Icons.logout,
+              color: Colors.black,
+            ),
+          ),
           actions: [
             IconButton(
               onPressed: () {

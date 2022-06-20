@@ -81,7 +81,7 @@ class SignUp extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            "Event Planner",
+            "Service Provider",
             style: TextStyle(
               color: kwhiteColor,
             ),

@@ -13,7 +13,10 @@ class HomeTabScreen extends StatefulWidget {
 }
 
 class _HomeTabScreenState extends State<HomeTabScreen> {
-  final _dbref = FirebaseDatabase.instance.ref().child("serviceProvider");
+  final _dbref = FirebaseDatabase.instance
+      .ref()
+      .child("serviceProvider")
+      .child(fauth.currentUser!.uid);
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -54,117 +57,81 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
             SizedBox(
               height: 5.h,
             ),
-            Container(
-              margin: EdgeInsets.all(7.h),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black26),
-              ),
-              child: ListTile(
-                leading: Icon(
-                  Icons.person,
-                  size: 35.h,
-                  color: Colors.black,
-                ),
-                title: Text(
-                  "Aziz khan",
-                  style: TextStyle(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Text("aziz@gmail.com"),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.close,
-                        size: 32.h,
-                      ),
-                      color: Colors.red.shade500,
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.done,
-                        size: 32.h,
-                      ),
-                      color: Colors.green.shade500,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // StreamBuilder(
-            //   stream: _dbref.onValue,
-            //   builder: (context, AsyncSnapshot snapshot) {
-            //     if (snapshot.hasError) {
-            //       return const Center(
-            //         child: Text("Failed To load data"),
-            //       );
-            //     }
-            //     if (snapshot.hasData) {
-            //       Map extractedData = snapshot.data.snapshot.value;
-            //       List item = [];
-            //       extractedData.forEach(
-            //           (index, snap) => item.add({"key": index, ...snap}));
-            //       return Expanded(
-            //         child: ListView.builder(
-            //           padding: EdgeInsets.all(10.h),
-            //           itemCount: extractedData.length,
-            //           scrollDirection: Axis.vertical,
-            //           shrinkWrap: true,
-            //           itemBuilder: (ctx, i) => Container(
-            //             margin: EdgeInsets.all(7.h),
-            //             width: double.infinity,
-            //             decoration: BoxDecoration(
-            //               border: Border.all(color: Colors.black26),
-            //             ),
-            //             child: ListTile(
-            //               leading: Icon(
-            //                 Icons.person,
-            //                 size: 35.h,
-            //                 color: Colors.black,
-            //               ),
-            //               title: Text(
-            //                 item[i]['request']['name'],
-            //                 style: TextStyle(
-            //                   fontSize: 17.sp,
-            //                   fontWeight: FontWeight.bold,
-            //                 ),
-            //               ),
-            //               subtitle: Text(item[i]['request']['email']),
-            //               trailing: Row(
-            //                 mainAxisSize: MainAxisSize.min,
-            //                 children: [
-            //                   IconButton(
-            //                     onPressed: () {},
-            //                     icon: Icon(
-            //                       Icons.close,
-            //                       size: 32.h,
-            //                     ),
-            //                     color: Colors.red.shade500,
-            //                   ),
-            //                   IconButton(
-            //                     onPressed: () {},
-            //                     icon: Icon(
-            //                       Icons.done,
-            //                       size: 32.h,
-            //                     ),
-            //                     color: Colors.green.shade500,
-            //                   ),
-            //                 ],
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       );
-            //     }
-            //     return const Center(child: CircularProgressIndicator());
-            //   },
-            // )
+            StreamBuilder(
+              stream: _dbref.onValue,
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text("Failed To load data"),
+                  );
+                }
+                if (snapshot.hasData) {
+                  List<Widget> item = [];
+                  //print(snapshot.data.snapshot.value.toString());
+                  final extractedData = snapshot.data.snapshot.value as Map;
+                  //print(extractedData['request']);
+                  if (extractedData['request'] != null) {
+                    extractedData.forEach((index, snap) {
+                      print(index);
+
+                      if (index == 'request') {
+                        Map requests = snap as Map;
+                        requests.forEach((key, value) {
+                          print("hello");
+                          print(key.toString());
+                          if (!(key == null)) {
+                            var tile = ListTile(
+                              leading: Icon(
+                                Icons.person,
+                                size: 35.h,
+                                color: Colors.black,
+                              ),
+                              title: Text(
+                                value['name'].toString(),
+                                style: TextStyle(
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              subtitle: Text(value['email'].toString()),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.close,
+                                      size: 32.h,
+                                    ),
+                                    color: Colors.red.shade500,
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.done,
+                                      size: 32.h,
+                                    ),
+                                    color: Colors.green.shade500,
+                                  ),
+                                ],
+                              ),
+                            );
+                            item.add(tile);
+                          }
+                        });
+                      }
+                    });
+                  } else {
+                    print("No data  ");
+                  }
+
+                  return Column(
+                    children: item.isNotEmpty ? item : [],
+                  );
+                }
+                return const Center(child: CircularProgressIndicator());
+              },
+            )
           ],
         ),
       ),
